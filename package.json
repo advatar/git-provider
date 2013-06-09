@@ -10,7 +10,8 @@
     "mocha": "*",
     "chai": "*",
     "chai-interface": "*",
-    "tracery": "*"
+    "tracery": "*",
+    "browserify": "*"
   },
   "directories": {
     "test": "test"
