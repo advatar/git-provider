@@ -1,0 +1,35 @@
+{
+  "name": "git-provider",
+  "version": "0.0.0",
+  "description": "git-provider ============",
+  "main": "index.js",
+  "dependencies": {
+    "github": "git://github.com/darvin/github.git"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "chai": "*",
+    "chai-interface": "*",
+    "tracery": "*"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/darvin/git-provider.git"
+  },
+  "keywords": [
+    "git"
+  ],
+  "author": "Sergey Klimov <sergey.v.klimov@gmail.com> (http://darvin.github.com/)",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "8e5f961accdb3351d0a6224c8a4298b097f0adff",
+  "bugs": {
+    "url": "https://github.com/darvin/git-provider/issues"
+  }
+}
