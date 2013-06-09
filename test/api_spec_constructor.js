@@ -30,7 +30,7 @@ var CREATE_REPO_NAME = "test-git-provider-repo"
   , FORKED_REPO = "git://github.com/joyent/node.git"
   , FORKED_REPO_NAME = "node"
   , READ_REPO_NAME = "bootstrap"
-  , READ_WRITE_REPO_NAME = READ_REPO_NAME;
+  , READ_WRITE_REPO_NAME = "test-git-provider-repo-2";
 
 
 module.exports = function(gitProviderName, gitProviderOpts) {
@@ -85,7 +85,6 @@ module.exports = function(gitProviderName, gitProviderOpts) {
       });
       xit("should be forked", function(done){
         gitProvider.reposFork(FORKED_REPO, function(err, repo){
-          console.error(err);
           expect(err).to.be.null;
           assertRepoInterface(repo);
           done();
@@ -127,9 +126,26 @@ module.exports = function(gitProviderName, gitProviderOpts) {
     describe("High-level file operations", function(){
 
       var FILE_COMMIT = null
-        , FILE_PATH = "doc/index.html";
+        , FILE_PATH = "README.md";
 
       var OLD_CONTENT = null;
+
+      before(function(done){
+        gitProvider.reposCreate(READ_WRITE_REPO_NAME, function(err, repo){
+          if (err) throw err;
+          done();
+        });
+
+      });
+
+      after(function(done){
+        gitProvider.reposDelete(READ_WRITE_REPO_NAME, function(err, repo){
+          if (err) throw err;
+          done();
+        });
+
+      });
+
       it("should get the file at path", function(done){
         gitProvider.repoFileGet({
             repo:READ_WRITE_REPO_NAME
@@ -178,19 +194,19 @@ module.exports = function(gitProviderName, gitProviderOpts) {
           , path: FILE_PATH
           , ref: FILE_COMMIT
         }, function(err, file){
-          console.error (FILE_COMMIT);
           expect(err).to.be.null;
           file.should.be.ok;
 
           done();
         });
       });
-      var NEW_FILE_PATH = "some.txt"
+      var NEW_FILE_PATH = "some.txt";
+      var NEW_FILE_CONTENT = "new file content!";
       it("should create the file at path", function(done){
         gitProvider.repoFileCreate({
             repo:READ_WRITE_REPO_NAME
           , path: NEW_FILE_PATH
-          , content: "some file content!"
+          , content: NEW_FILE_CONTENT
           , message: NEW_FILE_PATH + " is created by test"
           , branch: null
         }, function(err){
@@ -198,6 +214,22 @@ module.exports = function(gitProviderName, gitProviderOpts) {
           done();
         });
       });
+
+
+      it("should persist after creation", function(done){
+        gitProvider.repoFileGet({
+            repo:READ_WRITE_REPO_NAME
+          , path: NEW_FILE_PATH
+          , ref: null
+        }, function(err, file, sha){
+          expect(err).to.be.null;
+          file.should.be.ok;
+          file.should.be.equal(NEW_FILE_CONTENT);
+
+          done();
+        });
+      });
+
       it("should delete the file at path", function(done){
         gitProvider.repoFileDelete({
             repo:READ_WRITE_REPO_NAME
@@ -208,6 +240,19 @@ module.exports = function(gitProviderName, gitProviderOpts) {
           done();
         });
       });
+
+      it("should do not exist after removing", function(done){
+        gitProvider.repoFileGet({
+            repo:READ_WRITE_REPO_NAME
+          , path: NEW_FILE_PATH
+          , ref: null
+        }, function(err, file, sha){
+          expect(err).to.be.ok;
+          expect(sha).to.be.null;
+          done();
+        });
+      });
+
 
     });
   };
