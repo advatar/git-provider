@@ -45,7 +45,6 @@ module.exports = function(gitProviderName, gitProviderOpts) {
       });
     };
     describe("User", function(){
-      this.timeout(10000);
       it("should be authenticated", function(done) {
         expect(gitProvider).to.be.ok;
         gitProvider.authenticatedUser(function(err, user){
