@@ -1,9 +1,18 @@
 var chai = require('chai')
   , tracery = require('tracery')
+  , numbers = require('number-words')
+  , greg = require('greg')
   , expect = chai.expect;
 chai.should();
 chai.use(require('chai-interface'));
 
+
+
+function randomRepoName(){
+ var s = greg.sentence()
+  ,  reg=/(\d+)/;  
+ return s.replace(reg, numbers.stringify(s.match(reg)[1])).replace(/[^\w+]+/g, '-');
+};
 
 function assertRepoInterface(repo) {
   repo.should.have.interface({
@@ -26,11 +35,11 @@ function assertDirItemInterface(dirItem) {
     , 'type': String
   });
 };
-var CREATE_REPO_NAME = "test-git-provider-repo"
+var CREATE_REPO_NAME = randomRepoName()
   , FORKED_REPO = "git://github.com/joyent/node.git"
   , FORKED_REPO_NAME = "node"
   , READ_REPO_NAME = "bootstrap"
-  , READ_WRITE_REPO_NAME = "test-git-provider-repo-2";
+  , READ_WRITE_REPO_NAME = randomRepoName();
 
 
 module.exports = function(gitProviderName, gitProviderOpts) {

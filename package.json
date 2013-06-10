@@ -11,7 +11,9 @@
     "chai": "*",
     "chai-interface": "*",
     "tracery": "*",
-    "browserify": "*"
+    "browserify": "*",
+    "greg": "*",
+    "number-words": "0.0.2"
   },
   "directories": {
     "test": "test"
@@ -96,5 +98,4 @@
     ],
     "harness": "mocha"
   }
-
 }
