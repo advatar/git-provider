@@ -28,52 +28,55 @@ Planned adapters:
 
 #### Github.js
 
-    var gitProvider = require("git-provider")
-        gp = gitProvider("github",{
-            username:"YOUR_GITHUB_USERNAME"
-          , password: "YOUR_GITHUB_PASSWORD"
-        });
+```javascript
+var gitProvider = require("git-provider")
+    gp = gitProvider("github",{
+        username:"YOUR_GITHUB_USERNAME"
+      , password: "YOUR_GITHUB_PASSWORD"
+    });
+```
 
 ### Methods on gp object
   
-    gp.authenticatedUserGet(function(err, user){});
+```javascript
+gp.authenticatedUserGet(function(err, user){});
 
-    gp.reposGet(function(err, repositories){});
+gp.reposGet(function(err, repositories){});
 
-    gp.repoCreate(repoName, function(err, repo){});
+gp.repoCreate(repoName, function(err, repo){});
 
-    gp.repoDelete(repoName, function(err){});
+gp.repoDelete(repoName, function(err){});
 
-    gp.repoFork = function({url:"git//github.com/darvin/git-provider.git"}, function(err, repo) {});
+gp.repoFork = function({url:"git//github.com/darvin/git-provider.git"}, function(err, repo) {});
 
-    gp.repoGetContents({
-          ref: "master"
-        , path: "/path/inside/repo"
-      }, function(err, repoContents){});
+gp.repoGetContents({
+      ref: "master"
+    , path: "/path/inside/repo"
+  }, function(err, repoContents){});
 
-    gp.repoFileGet({
-          ref: "master"
-        , path: "/path/inside/repo/file.js"
-      }, function(err, fileContent, fileSha){});
+gp.repoFileGet({
+      ref: "master"
+    , path: "/path/inside/repo/file.js"
+  }, function(err, fileContent, fileSha){});
 
-    gp.repoFileUpdate({
-          branch: "master"
-        , path: "/path/inside/repo/file.js"
-        , message: "Commit Message"   //optional
-        , content: "New \n file \n content"
-      }, function(err){});
+gp.repoFileUpdate({
+      branch: "master"
+    , path: "/path/inside/repo/file.js"
+    , message: "Commit Message"   //optional
+    , content: "New \n file \n content"
+  }, function(err){});
 
-    gp.repoFileCreate({
-          branch: "master"
-        , path: "/path/inside/repo/file.js"
-        , message: "Commit Message"   //optional
-        , content: "New \n file \n content"
-      }, function(err){});
+gp.repoFileCreate({
+      branch: "master"
+    , path: "/path/inside/repo/file.js"
+    , message: "Commit Message"   //optional
+    , content: "New \n file \n content"
+  }, function(err){});
 
-    gp.repoFileDelete({
-          branch: "master"
-        , path: "/path/inside/repo/file.js"
-        , message: "Commit Message"   //optional
-      }, function(err){});
-
+gp.repoFileDelete({
+      branch: "master"
+    , path: "/path/inside/repo/file.js"
+    , message: "Commit Message"   //optional
+  }, function(err){});
+```
 
