@@ -47,8 +47,8 @@ module.exports = function(gitProviderName, gitProviderOpts) {
     var gitProvider = require('../')(gitProviderName, gitProviderOpts);
     
     var cleanRepos = function(cb) {
-      gitProvider.reposDelete(CREATE_REPO_NAME, function(err, result){
-        gitProvider.reposDelete(FORKED_REPO_NAME, function(err, result){
+      gitProvider.repoDelete(CREATE_REPO_NAME, function(err, result){
+        gitProvider.repoDelete(FORKED_REPO_NAME, function(err, result){
           cb(null);
         });
       });
@@ -56,7 +56,7 @@ module.exports = function(gitProviderName, gitProviderOpts) {
     describe("User", function(){
       it("should be authenticated", function(done) {
         expect(gitProvider).to.be.ok;
-        gitProvider.authenticatedUser(function(err, user){
+        gitProvider.authenticatedUserGet(function(err, user){
           expect(err).to.be.null;
           user.should.be.ok;
           done();
@@ -67,18 +67,18 @@ module.exports = function(gitProviderName, gitProviderOpts) {
       before(cleanRepos);
       after(cleanRepos);
       it("should be listed for user", function(done){
-        gitProvider.reposGet(function(err, repos){
+        gitProvider.reposGet(function(err, repo){
           expect(err).to.be.null;
-          repos.should.be.ok;
-          expect(repos).to.be.not.empty;
-          repos.forEach(function(repo) {
+          repo.should.be.ok;
+          expect(repo).to.be.not.empty;
+          repo.forEach(function(repo) {
             assertRepoInterface(repo);
           });
           done();
         });
       });
       it("should be created", function(done){
-        gitProvider.reposCreate(CREATE_REPO_NAME, function(err, repo){
+        gitProvider.repoCreate(CREATE_REPO_NAME, function(err, repo){
           expect(err).to.be.null;
           assertRepoInterface(repo);
           repo.name.should.be.equal(CREATE_REPO_NAME);
@@ -86,21 +86,21 @@ module.exports = function(gitProviderName, gitProviderOpts) {
         });
       })
       it("should be deleted", function(done){
-        gitProvider.reposDelete(CREATE_REPO_NAME, function(err, result){
+        gitProvider.repoDelete(CREATE_REPO_NAME, function(err, result){
           expect(err).to.be.null;
           result.should.be.ok;
           done();
         });
       });
       xit("should be forked", function(done){
-        gitProvider.reposFork(FORKED_REPO, function(err, repo){
+        gitProvider.repoFork(FORKED_REPO, function(err, repo){
           expect(err).to.be.null;
           assertRepoInterface(repo);
           done();
         });
       });
       it("should list the root repo content", function(done){
-        gitProvider.reposGetContents({
+        gitProvider.repoGetContents({
             repo:READ_REPO_NAME
           , path: ""
           , ref: null
@@ -114,7 +114,7 @@ module.exports = function(gitProviderName, gitProviderOpts) {
         });
       });
       it("should list the repo content in directory path", function(done){
-        gitProvider.reposGetContents({
+        gitProvider.repoGetContents({
             repo:READ_REPO_NAME
           , path: "doc"
           , ref: null
@@ -140,7 +140,7 @@ module.exports = function(gitProviderName, gitProviderOpts) {
       var OLD_CONTENT = null;
 
       before(function(done){
-        gitProvider.reposCreate(READ_WRITE_REPO_NAME, function(err, repo){
+        gitProvider.repoCreate(READ_WRITE_REPO_NAME, function(err, repo){
           if (err) throw err;
           done();
         });
@@ -148,7 +148,7 @@ module.exports = function(gitProviderName, gitProviderOpts) {
       });
 
       after(function(done){
-        gitProvider.reposDelete(READ_WRITE_REPO_NAME, function(err, repo){
+        gitProvider.repoDelete(READ_WRITE_REPO_NAME, function(err, repo){
           if (err) throw err;
           done();
         });
