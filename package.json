@@ -13,7 +13,9 @@
     "tracery": "*",
     "browserify": "*",
     "greg": "*",
-    "number-words": "0.0.2"
+    "number-words": "0.0.2",
+    "temp": "~0.5.0",
+    "shelljs": "~0.1.4"
   },
   "directories": {
     "test": "test"

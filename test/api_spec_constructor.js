@@ -35,10 +35,27 @@ function assertDirItemInterface(dirItem) {
     , 'type': String
   });
 };
+
+
+function assectGitProviderInterface(gitProvider) {
+  gitProvider.should.have.interface({
+      authenticatedUserGet: Function
+    , reposGet: Function
+    , repoCreate: Function
+    , repoDelete: Function
+    , repoFork: Function
+    , repoGetContents: Function
+    , repoFileGet: Function
+    , repoFileUpdate: Function
+    , repoFileCreate: Function
+    , repoFileDelete: Function
+  });
+}
+
 var CREATE_REPO_NAME = randomRepoName()
   , FORKED_REPO = "git://github.com/joyent/node.git"
   , FORKED_REPO_NAME = "node"
-  , READ_REPO_NAME = "bootstrap"
+  , READ_REPO_NAME = "node-slug"
   , READ_WRITE_REPO_NAME = randomRepoName();
 
 
@@ -53,6 +70,12 @@ module.exports = function(gitProviderName, gitProviderOpts) {
         });
       });
     };
+    describe("Interface", function(){
+      it("should be proper", function(){
+        assectGitProviderInterface(gitProvider);
+      });
+    });
+
     describe("User", function(){
       it("should be authenticated", function(done) {
         expect(gitProvider).to.be.ok;
@@ -107,6 +130,7 @@ module.exports = function(gitProviderName, gitProviderOpts) {
         }, function(err, contents){
           expect(err).to.be.null;
           contents.should.not.be.empty;
+          contents.length.should.be.equal(9);
           contents.forEach(function(item){
             assertDirItemInterface(item);
           });
@@ -116,12 +140,13 @@ module.exports = function(gitProviderName, gitProviderOpts) {
       it("should list the repo content in directory path", function(done){
         gitProvider.repoGetContents({
             repo:READ_REPO_NAME
-          , path: "doc"
+          , path: "src"
           , ref: null
         }, function(err, contents){
           expect(err).to.be.null;
           contents.should.be.ok;
           contents.should.not.be.empty;
+          contents.length.should.be.equal(1);
           contents.forEach(function(item){
             assertDirItemInterface(item);
           });
